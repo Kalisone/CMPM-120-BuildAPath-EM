@@ -6,6 +6,7 @@ class Path extends Phaser.Scene {
 
     constructor(){
         super("pathMaker");
+        this.my = {sprite: {}};
     }
 
     preload() {
@@ -87,8 +88,9 @@ class Path extends Phaser.Scene {
     }
 
     update() {
+        let my = this.my;
 
-        if (Phaser.Input.Keyboard.JustDown(this.ESCKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.ESCKey)) {
             console.log("Clear path");
             // TODO: 
             // * Add code to check if run mode is active
@@ -99,9 +101,7 @@ class Path extends Phaser.Scene {
 
         }
 
-
-
-        if (Phaser.Input.Keyboard.JustDown(this.oKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.oKey)) {
             console.log("Output the points");
 
             // TODO:
@@ -115,9 +115,14 @@ class Path extends Phaser.Scene {
             //  point0.x, point0.y,
             //  point1.x, point1.y
             // ]
+            console.log("[");
+            for (let point of this.curve.points){
+                console.log(`${point.x}, ${point.y}, `);
+            }
+            console.log("]");
         }   
 
-        if (Phaser.Input.Keyboard.JustDown(this.rKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
             console.log("Run mode");
             //
             // TODO: 
@@ -149,8 +154,36 @@ class Path extends Phaser.Scene {
             //     rotateToPath: true,
             //     rotationOffset: -90
             // }
-        }
+            if (my.sprite.enemyShip.visible) {
+                my.sprite.enemyShip.stopFollow();
+                my.sprite.enemyShip.visible = false;
+                my.sprite.enemyShip.following = false;
+            }else{
+                my.sprite.enemyShip.following = true;
+                
+                if (this.curve.points.length === 0) {
+                    console.log("No points in curve, can't do runMode");
+                    return;
+                } else {
+                    my.sprite.enemyShip.x = this.curve.points[0].x;
+                    my.sprite.enemyShip.y = this.curve.points[0].y;
+                }
 
-    }
+                my.sprite.enemyShip.visible = true;
+
+                my.sprite.enemyShip.startFollow({
+                    from: 0,
+                    to: 1,
+                    delay: 0,
+                    duration: 2000,
+                    ease: 'Sine.easeInOut',
+                    repeat: -1,
+                    yoyo: true,
+                    rotateToPath: true,
+                    rotationOffset: -90
+                });
+            }
+        }
+    } // end update()
 
 }
