@@ -90,18 +90,17 @@ class Path extends Phaser.Scene {
     update() {
         let my = this.my;
 
-        if(Phaser.Input.Keyboard.JustDown(this.ESCKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.ESCKey)) { // Clear path
             console.log("Clear path");
+
             // TODO: 
             // * Add code to check if run mode is active
             //   If run mode is active, then don't call clearPoints()
             //   (i.e., can only clear points when not in run mode)
-
             this.clearPoints();
-
         }
 
-        if(Phaser.Input.Keyboard.JustDown(this.oKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.oKey)) { // Output points
             console.log("Output the points");
 
             // TODO:
@@ -122,9 +121,9 @@ class Path extends Phaser.Scene {
             console.log("]");
         }   
 
-        if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
+        if(Phaser.Input.Keyboard.JustDown(this.rKey)) { // Run mode
             console.log("Run mode");
-            //
+            
             // TODO: 
             // Implement run mode
             // Check for runMode active
